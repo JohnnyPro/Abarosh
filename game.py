@@ -3,6 +3,8 @@ from sys import exit
 from player import Player
 from enemy import Enemy
 from rescued_people import RescuedPeeps
+
+
 class Game:
     def __init__(self) -> None:
         pygame.init()
@@ -25,16 +27,15 @@ class Game:
         self.rescuedpeeps.append(RescuedPeeps(50, 350, self))
         self.rescuedpeeps.append(RescuedPeeps(50, 500, self))
 
-
     def update(self):
         player_x, player_y = self.player.get_position()
         enemy_x, enemy_y = self.enemy.get_enemy_position()
 
         peeps_to_remove = []
 
-        if abs(player_x - enemy_x) <= 2 or abs(player_y - enemy_y) <= 2:
+        if self.player.player_rect.colliderect(self.enemy.enemy_rect):
             # implement your game over logic here
-            print("Game over bitch hehehe") 
+            print("Game over bitch hehehe")
 
         self.player.update()
         self.enemy.update(self.player.get_position())
@@ -47,8 +48,6 @@ class Game:
 
         for peep in peeps_to_remove:
             self.rescuedpeeps.remove(peep)
-
-
 
     def draw(self):
         self.screen.fill('White')
