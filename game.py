@@ -32,7 +32,7 @@ class Game:
 
         peeps_to_remove = []
 
-        if abs(player_x - enemy_x) <= 2 or abs(player_y - enemy_y) <= 2:
+        if abs(player_x - enemy_x) <= 15 and abs(player_y - enemy_y) <= 15:
             # implement your game over logic here
             print("Game over bitch hehehe") 
 
