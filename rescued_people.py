@@ -14,9 +14,9 @@ class RescuedPeeps:
         posx, posy = self.rescued_person_rect.center
 
         if abs(posx - player_position[0]) <= 15 and abs(posy - player_position[1]) <= 15:
-            #This event will increment the player score count (We don't have to implement this if we don't have time)
             print("I have been saved!!")
             self.visible = False
+            self.game.increase_enemy_speed()
 
 
 

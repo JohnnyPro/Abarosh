@@ -25,6 +25,8 @@ class Game:
         self.rescuedpeeps.append(RescuedPeeps(50, 350, self))
         self.rescuedpeeps.append(RescuedPeeps(50, 500, self))
 
+    def increase_enemy_speed(self):
+        self.enemy.increase_difficulty()
 
     def update(self):
         player_x, player_y = self.player.get_position()

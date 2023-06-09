@@ -4,8 +4,8 @@ class StaminaBar:
     def __init__(self, max_stamina_point) -> None:
         self.total_capable_stamina = max_stamina_point
         self.max_stamina_point = max_stamina_point
-        self.total_stamina_point = 1.8
-        self.regeneration_time_out_factor = -5
+        self.total_stamina_point = 1.2
+        self.regeneration_time_out_factor = -40
 
     def create_stamina_bar(self, screen, x, y, width, height):
         stamina_bar_outline = pygame.Surface((width, height))
@@ -27,5 +27,5 @@ class StaminaBar:
 
     def refill_stamina(self):
         if self.max_stamina_point < self.total_capable_stamina:
-            self.max_stamina_point += 0.1
+            self.max_stamina_point += 0.3
     
