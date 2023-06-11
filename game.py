@@ -27,13 +27,10 @@ class Game:
         self.rescuedpeeps.append(RescuedPeeps(50, 350, self))
         self.rescuedpeeps.append(RescuedPeeps(50, 500, self))
 
-    def increase_enemy_speed(self):
+    def increase_enemy_difficulty(self):
         self.enemy.increase_difficulty()
 
     def update(self):
-        player_x, player_y = self.player.get_position()
-        enemy_x, enemy_y = self.enemy.get_enemy_position()
-
         peeps_to_remove = []
 
         if self.player.player_rect.colliderect(self.enemy.enemy_rect):
@@ -41,7 +38,7 @@ class Game:
             print("Game over bitch hehehe")
 
         self.player.update()
-        self.enemy.update(self.player.get_position())
+        self.enemy.update(self.player.get_position().center)
 
         for peeps in self.rescuedpeeps:
             if not peeps.visible:

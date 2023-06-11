@@ -13,10 +13,10 @@ class RescuedPeeps:
     def update(self, player_position):
         posx, posy = self.rescued_person_rect.center
 
-        if abs(posx - player_position[0]) <= 15 and abs(posy - player_position[1]) <= 15:
+        if self.rescued_person_rect.colliderect(player_position):
             print("I have been saved!!")
             self.visible = False
-            self.game.increase_enemy_speed()
+            self.game.increase_enemy_difficulty()
 
 
 

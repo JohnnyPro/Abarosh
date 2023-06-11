@@ -8,7 +8,7 @@ class Enemy:
         self.enemy_rect = self.enemy_surface.get_rect(center=(pos_x, pos_y))
         self.orignal_enemy_position = self.enemy_rect.center
 
-        self.enemy_speed = 3.2 #gradually increase the enemy speed when it passes different phases (Decrease it if you want it's just fun to use stamina)
+        self.enemy_speed = 2.2 #gradually increase the enemy speed when it passes different phases (Decrease it if you want it's just fun to use stamina)
 
         self.moving_up = True
         self.moving_left = False
