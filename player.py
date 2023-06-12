@@ -4,9 +4,11 @@ from stamina_bar import StaminaBar
 
 class Player:
     def __init__(self, pos_x, pos_y) -> None:
+        self.load_images()
         self.stamina = StaminaBar(100)
-        self.player_surface = pygame.Surface((40, 40))
-        self.player_surface.fill('Blue')
+        self.player_surface = pygame.Surface((128,128))
+        self.image_index = 0
+        
 
         self.player_rect = self.player_surface.get_rect(center=(pos_x, pos_y))
 
@@ -17,13 +19,45 @@ class Player:
 
         # Direction and speed
         self.__moving_up = False
-        self.__moving_left = False
+        self.__moving_left = True
         self.__moving_right = False
         self.__moving_down = False
         self.__moving_fast = False
 
+    def load_images(self):
+        self.player_down_1 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-2.png.png').convert_alpha()
+        self.player_down_2 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-3.png.png').convert_alpha()
+        self.player_up_1 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-4.png.png').convert_alpha()
+        self.player_up_2 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-5.png.png').convert_alpha()
+        self.player_right_1 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-6.png.png').convert_alpha()
+        self.player_right_2 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-7.png.png').convert_alpha()
+        self.player_left_1 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-8.png.png').convert_alpha()
+        self.player_left_2 = pygame.image.load('./assets/sprites/kuncho_sprite/kuncho-9.png.png').convert_alpha()
+
+        self.animation_direction  = {
+            "up" : [self.player_up_1, self.player_up_2],
+            "down" : [self.player_down_1, self.player_down_2],
+            "left": [self.player_left_1, self.player_left_2],
+            "right": [self.player_right_1, self.player_right_2]
+            }
+        self.setup_collision_box()
+
+    def setup_collision_box(self):
+        self.player_down_1 = pygame.transform.scale(self.player_down_1, (40,40))
+        self.player_down_2 = pygame.transform.scale(self.player_down_2, (40,40))
+        self.player_up_1 = pygame.transform.scale(self.player_up_1, (40,40))
+        self.player_up_2 = pygame.transform.scale(self.player_up_2, (40,40))
+        self.player_right_1 = pygame.transform.scale(self.player_right_1, (40,40))
+        self.player_right_2 = pygame.transform.scale(self.player_right_2, (40,40))
+        self.player_left_1 = pygame.transform.scale(self.player_left_1, (40,40))
+        self.player_left_2 = pygame.transform.scale(self.player_left_2, (40,40))
+
+        
+
     def update(self):
         self.configure_keys()
+        self.image_index = (self.image_index + 0.1) % 2
+        self.player_animation()
 
         self.__moving_up = self.up_keys and self.player_rect.midtop[1] > 0
         self.__moving_left = self.left_keys and self.player_rect.midleft[0] > 0
@@ -94,3 +128,13 @@ class Player:
     def draw(self, screen):
         screen.blit(self.player_surface, self.player_rect)
         self.stamina.create_stamina_bar(screen, 500, 50, 260, 4)
+
+    def player_animation(self):
+        if self.__moving_up:
+            self.player_surface = self.animation_direction["up"][int(self.image_index)]
+        elif self.__moving_down:
+            self.player_surface = self.animation_direction["down"][int(self.image_index)]
+        elif self.__moving_left:
+            self.player_surface = self.animation_direction["left"][int(self.image_index)]
+        elif self.__moving_right:
+            self.player_surface = self.animation_direction["right"][int(self.image_index)]

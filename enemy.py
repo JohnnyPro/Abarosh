@@ -2,19 +2,20 @@ import pygame, math, random
 from player import Player
 class Enemy:
     def __init__(self, pos_x, pos_y, detection_radius) -> None:
-        self.enemy_surface = pygame.Surface((40, 40))
-        self.enemy_surface.fill('Red')
+        self.load_images()
+        self.image_index = 0
+        self.enemy_surface = self.enemy_up_1
 
         self.enemy_rect = self.enemy_surface.get_rect(center=(pos_x, pos_y))
         self.orignal_enemy_position = self.enemy_rect.center
 
         self.enemy_speed = 2.2 #gradually increase the enemy speed when it passes different phases (Decrease it if you want it's just fun to use stamina)
+        self.direction = "up"
 
         self.moving_up = True
         self.moving_left = False
         self.moving_right = False
         self.moving_down = False
-        self.moving_fast = False
 
         self.detection_radius = detection_radius
         self.is_detecting_player = False
@@ -22,11 +23,41 @@ class Enemy:
         self.timeout = 100
         self.leaving_probability = 0.1 # gradually increase it when the enemy passes different phases
 
+    def load_images(self):
+        self.enemy_down_1 = pygame.image.load('./assets/sprites/police_sprite/Police-2.png.png').convert_alpha()
+        self.enemy_down_2 = pygame.image.load('./assets/sprites/police_sprite/Police-3.png.png').convert_alpha()
+        self.enemy_up_1 = pygame.image.load('./assets/sprites/police_sprite/Police-4.png.png').convert_alpha()
+        self.enemy_up_2 = pygame.image.load('./assets/sprites/police_sprite/Police-5.png.png').convert_alpha()
+        self.enemy_right_1 = pygame.image.load('./assets/sprites/police_sprite/Police-6.png.png').convert_alpha()
+        self.enemy_right_2 = pygame.image.load('./assets/sprites/police_sprite/Police-7.png.png').convert_alpha()
+        self.enemy_left_1 = pygame.image.load('./assets/sprites/police_sprite/Police-8.png.png').convert_alpha()
+        self.enemy_left_2 = pygame.image.load('./assets/sprites/police_sprite/Police-9.png.png').convert_alpha()
+
+        self.animation_direction  = {
+            "up" : [self.enemy_up_1, self.enemy_up_2],
+            "down" : [self.enemy_down_1, self.enemy_down_2],
+            "left": [self.enemy_left_1, self.enemy_left_2],
+            "right": [self.enemy_right_1, self.enemy_right_2]
+            }
+        self.setup_collision_box()
+    
+    def setup_collision_box(self):
+        self.enemy_down_1 = pygame.transform.scale(self.enemy_down_1, (40,40))
+        self.enemy_down_2 = pygame.transform.scale(self.enemy_down_2, (40,40))
+        self.enemy_up_1 = pygame.transform.scale(self.enemy_up_1, (40,40))
+        self.enemy_up_2 = pygame.transform.scale(self.enemy_up_2, (40,40))
+        self.enemy_right_1 = pygame.transform.scale(self.enemy_right_1, (40,40))
+        self.enemy_right_2 = pygame.transform.scale(self.enemy_right_2, (40,40))
+        self.enemy_left_1 = pygame.transform.scale(self.enemy_left_1, (40,40))
+        self.enemy_left_2 = pygame.transform.scale(self.enemy_left_2, (40,40))
+
+
     def update(self, player_position):
         
         distance_to_player = math.dist(self.enemy_rect.center, player_position)
         self.is_detecting_player = distance_to_player <= self.detection_radius
-
+        self.image_index = (self.image_index + 0.1) % 2
+        self.enemy_animation()
 
         if self.is_detecting_player:
             enemy_leaves = random.random() < self.leaving_probability 
@@ -53,19 +84,21 @@ class Enemy:
         else:
             if self.enemy_rect.midtop[1] <= 0:
                 self.enemy_rect.centery += self.enemy_speed
-                self.moving_down = True
-                self.moving_up = False
+                self.direction = "down"
             
             elif self.enemy_rect.midbottom[1] >= 600:
-                self.moving_up = True
-                self.moving_down = False
+                self.direction = "up"
                 self.enemy_rect.centery -= self.enemy_speed
 
             else:
-                if self.moving_up:
+                if self.direction == "up":
+                    self.moving_up = True
+                    self.moving_down = False
                     self.enemy_rect.centery -= self.enemy_speed
                 
-                elif self.moving_down:
+                elif self.direction == "down":
+                    self.moving_down = True
+                    self.moving_up = False
                     self.enemy_rect.centery += self.enemy_speed
 
 
@@ -85,6 +118,7 @@ class Enemy:
 
    
 
+
     def draw(self, screen):
         screen.blit(self.enemy_surface, self.enemy_rect)
 
@@ -96,3 +130,15 @@ class Enemy:
         self.enemy_speed *= 1.3
         self.leaving_probability /= 2
         self.detection_radius += 25
+
+    def enemy_animation(self):
+        if self.moving_up:
+            self.enemy_surface = self.animation_direction["up"][int(self.image_index)]
+        elif self.moving_down:
+            self.enemy_surface = self.animation_direction["down"][int(self.image_index)]
+
+        elif self.moving_left:
+            self.enemy_surface = self.animation_direction["left"][int(self.image_index)]
+
+        elif self.moving_right:
+            self.enemy_surface = self.animation_direction["right"][int(self.image_index)]
