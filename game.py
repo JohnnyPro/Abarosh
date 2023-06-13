@@ -33,7 +33,7 @@ class Game:
     def update(self):
         peeps_to_remove = []
 
-        if self.player.player_rect.colliderect(self.enemy.enemy_rect):
+        if self.player.player_collision_rect.colliderect(self.enemy.enemy_collision_rect):
             # implement your game over logic here
             print("Game over bitch hehehe")
 
@@ -52,7 +52,10 @@ class Game:
     def draw(self):
         self.screen.fill('White')
         self.player.draw(self.screen)
+        self.player.draw_collision_box(self.screen)
+
         self.enemy.draw(self.screen)
+        self.enemy.draw_collision_box(self.screen)
 
         for peeps in self.rescuedpeeps:
             peeps.draw(self.screen)
