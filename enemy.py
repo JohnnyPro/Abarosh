@@ -60,12 +60,12 @@ class Enemy:
             self.go_to_target(self.orignal_enemy_position)
 
         else:
-            if self.enemy_rect.midtop[1] <= 0:
+            if self.enemy_rect.midtop[1] <= 70:
                 self.enemy_rect.centery += self.enemy_speed
                 self.enemy_collision_rect.centery += self.enemy_speed
                 self.direction = "down"
 
-            elif self.enemy_rect.midbottom[1] >= 600:
+            elif self.enemy_rect.midbottom[1] >= 580:
                 self.direction = "up"
                 self.enemy_rect.centery -= self.enemy_speed
                 self.enemy_collision_rect.centery -= self.enemy_speed

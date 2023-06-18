@@ -29,18 +29,26 @@ class Player:
         # Speed boolean
         self.__moving_fast = False
 
-    def update(self):
+        self.is_moving = True
+
+    def update(self, rock_position):
         self.configure_keys()
         self.image_index = (self.image_index + 0.1) % 2
         self.player_animation()
 
-        self.__moving_up = self.up_keys and self.player_rect.midtop[1] > 0
-        self.__moving_left = self.left_keys and self.player_collision_rect.midleft[0] > 0
-        self.__moving_down = self.down_keys and self.player_rect.midbottom[1] < 600
+        self.__moving_up = self.up_keys and self.player_rect.midtop[1] > 70
+        self.__moving_left = self.left_keys and self.player_collision_rect.midleft[0] > 10
+        self.__moving_down = self.down_keys and self.player_rect.midbottom[1] < 580 
         self.__moving_right = self.right_keys and self.player_collision_rect.midright[
-            0] < 800
+            0] < 780 
         self.__moving_fast = self.can_move_fast()
 
+
+        if self.colliding_with_rock(rock_position):
+            self.is_moving = False 
+             # Set the is_moving flag to False when colliding with a rock
+        else:
+            self.is_moving = True 
         self.move()
 
     def configure_keys(self):
@@ -70,6 +78,8 @@ class Player:
         return key[pygame.K_LSHIFT]
 
     def move(self):
+        if not self.is_moving:
+            return
         self.__player_speed = 2.8 if not self.__moving_fast else self.__player_running_speed
 
         if self.__moving_up and not self.__is_colliding:
@@ -108,6 +118,9 @@ class Player:
     def get_position(self):
         return self.player_collision_rect
 
+    def deplete_stamina(self):
+        self.stamina.deplete_stamina()
+
     def draw(self, screen):
 
         screen.blit(self.player_surface, self.player_rect)
@@ -129,3 +142,5 @@ class Player:
         elif self.__moving_right:
             self.player_surface = self.animation_direction["right"][int(
                 self.image_index)]
+    def colliding_with_rock(self, rock_position):
+        return self.player_collision_rect.colliderect(rock_position)

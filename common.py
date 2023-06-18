@@ -2,9 +2,9 @@ from collections import defaultdict
 import pygame
 
 
-def setup_collision_box(surface, rect):
-    collision_box_width = 48
-    collision_box_height = 48
+def setup_collision_box(surface, rect, width=48, height=48):
+    collision_box_width = width
+    collision_box_height = height
     collision_box_offset_x = (
         surface.get_width() - collision_box_width) // 2
     collision_box_offset_y = (
@@ -29,7 +29,9 @@ def load_images(image_name: str):
     for direction in directions:
         for _ in range(2):
             image = f'{image_folder_path}/{image_name}-{image_number}.png.png'
-            animation_direction[direction].append(pygame.image.load(image))
+            loaded_image = pygame.image.load(image)
+            scaled_image = pygame.transform.scale(loaded_image, (96, 96))
+            animation_direction[direction].append(scaled_image)
             image_number += 1
     print(animation_direction)
     return animation_direction

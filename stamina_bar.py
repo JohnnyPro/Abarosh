@@ -15,7 +15,7 @@ class StaminaBar:
         stamina_remaning_bar = 0 if stamina_remaning_bar <= 0 else stamina_remaning_bar
 
         stamina_bar = pygame.Surface((stamina_remaning_bar,height))
-        stamina_bar.fill('Green')
+        stamina_bar.fill((255,255, 0))
         screen.blit(stamina_bar,  (x, y))
 
     def get_remaining_stamina(self):
@@ -24,6 +24,8 @@ class StaminaBar:
     def use_stamina(self):
         #if the player depletes the stamina bar we will have a time out so that the player won't abuse running
         self.max_stamina_point = max(self.max_stamina_point - self.total_stamina_point, self.regeneration_time_out_factor)
+    def deplete_stamina(self):
+        self.max_stamina_point = 0
 
     def refill_stamina(self):
         if self.max_stamina_point < self.total_capable_stamina:
