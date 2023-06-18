@@ -51,11 +51,19 @@ class Game:
 
     def draw(self):
         self.screen.fill('White')
-        self.player.draw(self.screen)
-        self.player.draw_collision_box(self.screen)
+        if (self.player.get_position().centery > self.enemy.get_enemy_position()[1]):
+            self.enemy.draw(self.screen)
+            self.enemy.draw_collision_box(self.screen)
+            
+            self.player.draw(self.screen)
+            self.player.draw_collision_box(self.screen)
 
-        self.enemy.draw(self.screen)
-        self.enemy.draw_collision_box(self.screen)
+        else:
+            self.player.draw(self.screen)
+            self.player.draw_collision_box(self.screen)
+
+            self.enemy.draw(self.screen)
+            self.enemy.draw_collision_box(self.screen)
 
         for peeps in self.rescuedpeeps:
             peeps.draw(self.screen)
