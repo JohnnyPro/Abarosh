@@ -1,4 +1,4 @@
-from game import Game
+from main_menu import MainMenu
 
-game = Game()
-game.run()
+
+MainMenu()

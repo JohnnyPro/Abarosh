@@ -14,8 +14,9 @@ class MainMenu:
         pygame.quit()
         sys.exit()
 
-    def __init__(self, screen) -> None:
-
+    def __init__(self) -> None:
+        pygame.init()
+        screen = pygame.display.set_mode((800, 600))
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)
         abaroshText = fontObj.render("Abarosh", True, "black")
         abaroshTextRect = abaroshText.get_rect(
@@ -53,9 +54,3 @@ class MainMenu:
                 button.changeColor(pygame.mouse.get_pos())
 
             pygame.display.update()
-
-
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-
-MainMenu(screen=screen)
