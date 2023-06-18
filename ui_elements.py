@@ -9,13 +9,11 @@ class Button():
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.callback = callback
-        width = 400
-        height = 80
+        width = 150
+        height = 50
         self.normalCol = (50, 50, 50, 0)
-        self.highlightCol = (50, 50, 50, 200)
+        self.highlightCol = (50, 50, 50, 120)
         self.text_input = text_input
-        self.rect = pygame.Rect(
-            x_pos-(width/2), y_pos-(height/2), width, height)
         self.button = pygame.Surface((width, height))
         self.button.fill(self.normalCol)
         self.button.set_alpha(self.normalCol[-1])
@@ -32,12 +30,20 @@ class Button():
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.callback()
 
-    def changeColor(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.text = fontObj.render(self.text_input, True, "red")
-            self.button.fill(self.highlightCol)
-            self.button.set_alpha(self.highlightCol[-1])
-        else:
+    def textColChange(self, backToNormal=False):
+        if backToNormal:
             self.text = fontObj.render(self.text_input, True, "white")
-            self.button.fill(self.normalCol)
-            self.button.set_alpha(self.normalCol[-1])
+            return
+        self.text = fontObj.render(self.text_input, True, "red")
+
+    def changeColor(self, position, hovered=False):
+        if hovered or position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+
+            # self.button.fill(self.highlightCol)
+            # self.button.set_alpha(self.highlightCol[-1])
+            return True
+        else:
+            self.textColChange(True)
+            # self.button.fill(self.normalCol)
+            # self.button.set_alpha(self.normalCol[-1])
+            return False
