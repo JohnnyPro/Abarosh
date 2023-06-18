@@ -99,6 +99,30 @@ class Enemy:
                 direction_x * self.enemy_speed)
             self.enemy_collision_rect.centery += int(
                 direction_y * self.enemy_speed)
+        print(dy)
+        if dy >= 10:
+            self.moving_up = False
+            self.moving_left = False
+            self.moving_right = False
+            self.moving_down = True
+        elif dy <= -10:
+            self.moving_up = True
+            self.moving_down = False
+            self.moving_left = False
+            self.moving_right = False
+
+        else:
+            if dx > 0:
+                self.moving_right = True
+                self.moving_down = False
+                self.moving_left = False
+                self.moving_right = False
+            
+            elif dx < 0:
+                self.moving_left = True
+                self.moving_down = False
+                self.moving_left = False
+                self.moving_right = False
 
     def draw(self, screen):
         screen.blit(self.enemy_surface, self.enemy_rect)
@@ -127,5 +151,6 @@ class Enemy:
                 self.image_index)]
 
         elif self.moving_right:
+            print("I'm supposed to be here")
             self.enemy_surface = self.animation_direction["right"][int(
                 self.image_index)]
