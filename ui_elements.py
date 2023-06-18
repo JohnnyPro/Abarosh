@@ -11,13 +11,15 @@ class Button():
         self.callback = callback
         width = 400
         height = 80
-        self.normalCol = (50, 50, 50, 200)
-        self.highlightCol = (80, 80, 80, 200)
+        self.normalCol = (50, 50, 50, 0)
+        self.highlightCol = (50, 50, 50, 200)
         self.text_input = text_input
         self.rect = pygame.Rect(
             x_pos-(width/2), y_pos-(height/2), width, height)
         self.button = pygame.Surface((width, height))
         self.button.fill(self.normalCol)
+        self.button.set_alpha(self.normalCol[-1])
+
         self.rect = self.button.get_rect(center=(self.x_pos, self.y_pos))
         self.text = fontObj.render(self.text_input, True, "white")
         self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
@@ -34,6 +36,8 @@ class Button():
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.text = fontObj.render(self.text_input, True, "red")
             self.button.fill(self.highlightCol)
+            self.button.set_alpha(self.highlightCol[-1])
         else:
             self.text = fontObj.render(self.text_input, True, "white")
             self.button.fill(self.normalCol)
+            self.button.set_alpha(self.normalCol[-1])

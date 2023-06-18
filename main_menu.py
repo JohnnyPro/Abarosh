@@ -17,8 +17,9 @@ class MainMenu:
     def __init__(self) -> None:
         pygame.init()
         screen = pygame.display.set_mode((800, 600))
+
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)
-        abaroshText = fontObj.render("Abarosh", True, "black")
+        abaroshText = fontObj.render("Abarosh", True, "white")
         abaroshTextRect = abaroshText.get_rect(
             center=(screen.get_width()/2, 100))
         abaroshCover = pygame.image.load("assets/title_image/Abarosh.png")
@@ -46,7 +47,7 @@ class MainMenu:
                     for button in buttons:
                         button.checkForInput(pygame.mouse.get_pos())
 
-            screen.fill("white")
+            screen.fill("black")
             screen.blit(abaroshCover, abaroshCoverRect)
             screen.blit(abaroshText, abaroshTextRect)
             for button in buttons:
