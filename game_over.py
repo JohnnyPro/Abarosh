@@ -1,8 +1,6 @@
 import pygame
 import sys
 from ui_elements import Button
-from main_menu import MainMenu
-from game import Game
 from state import State
 
 

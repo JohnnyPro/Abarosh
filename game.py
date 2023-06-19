@@ -47,6 +47,10 @@ class Game(State):
             # implement your game over logic here
             State.currentPage = "GAMEOVER"
 
+        elif not self.rescuedpeeps:
+            print("You won")
+            State.currentPage = "GAMEWON"
+
         if self.enemy.enemy_collision_rect.colliderect(self.rock.rock_collision_rect):
             print("Enemy down I repeat enemy down")
 
