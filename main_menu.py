@@ -7,13 +7,17 @@ from pygame import mixer
 
 class MainMenu:
     def play(self):
+        mixer.music.stop()
         State.currentPage = "PLAY"
 
     def quit(self):
+        mixer.music.stop()
+        
         State.currentPage = "QUIT"
 
     def __init__(self) -> None:
         pygame.init()
+        
         screen = pygame.display.set_mode((800, 600))
 
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)

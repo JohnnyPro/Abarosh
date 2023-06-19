@@ -5,6 +5,8 @@ from enemy import Enemy
 from rescued_people import RescuedPeeps
 from rock_tile import Rock
 from state import State
+from pygame import mixer
+
 
 
 class Game(State):
