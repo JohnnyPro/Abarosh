@@ -44,7 +44,6 @@ class Game(State):
         peeps_to_remove = []
 
         if self.player.player_collision_rect.colliderect(self.enemy.enemy_collision_rect):
-            # implement your game over logic here
             State.currentPage = "GAMEOVER"
 
         elif not self.rescuedpeeps:
@@ -52,8 +51,8 @@ class Game(State):
             State.currentPage = "GAMEWON"
 
         if self.enemy.enemy_collision_rect.colliderect(self.rock.rock_collision_rect):
-            print("Enemy down I repeat enemy down")
-
+            self.enemy.send_to_guard_post()
+        
         if self.player.player_collision_rect.colliderect(self.rock.rock_collision_rect):
             self.player.deplete_stamina()
         self.player.update(self.rock.rock_collision_rect)
@@ -70,37 +69,34 @@ class Game(State):
 
     def draw(self):
         self.screen.blit(self.background_image, (0, 0))
-        if self.player.get_position().centery > self.rock.get_position().centery:
-            self.rock.draw(self.screen)
-            self.rock.draw_collision_box(self.screen)
-            self.draw_sprites()
-
-        else:
-            print("when am i drawn here?")
-            self.draw_sprites()
-            self.rock.draw(self.screen)
-            self.rock.draw_collision_box(self.screen)
+        self.draw_sprites()
 
         for peeps in self.rescuedpeeps:
             peeps.draw(self.screen)
-            peeps.draw_collision(self.screen)
 
         pygame.display.update()
 
     def draw_sprites(self):
-        if (self.player.get_position().centery > self.enemy.get_enemy_position()[1]):
-            self.enemy.draw(self.screen)
-            self.enemy.draw_collision_box(self.screen)
+        if (self.player.get_position().centery > self.enemy.get_position().centery):
+            self.draw_order(self.enemy)
+            self.draw_order(self.player)
 
-            self.player.draw(self.screen)
-            self.player.draw_collision_box(self.screen)
 
         else:
-            self.player.draw(self.screen)
-            self.player.draw_collision_box(self.screen)
+            self.draw_order(self.player)
+            self.draw_order(self.enemy)
 
-            self.enemy.draw(self.screen)
-            self.enemy.draw_collision_box(self.screen)
+    def draw_order(self, surface):
+        if surface.get_position().centery >= self.rock.get_position().centery:
+            self.rock.draw(self.screen)
+            self.rock.draw_collision_box(self.screen)
+            surface.draw(self.screen)
+
+        else:
+            surface.draw(self.screen)
+            self.rock.draw(self.screen)
+            self.rock.draw_collision_box(self.screen)
+
 
     def run(self):
         while State.currentPage == "PLAY":

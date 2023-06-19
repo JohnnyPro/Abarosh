@@ -26,9 +26,11 @@ class Enemy:
         self.is_detecting_player = False
         self.player_position = None
         self.timeout = 100
+
         # gradually increase it when the enemy passes different phases
         self.leaving_probability = 0.1
         self.enemy_collision_rect = setup_collision_box(self.enemy_surface, self.enemy_rect)
+        self.orignal_enemy_collision_position = self.enemy_collision_rect.center
 
     def update(self, player_position):
 
@@ -126,8 +128,8 @@ class Enemy:
     def draw(self, screen):
         screen.blit(self.enemy_surface, self.enemy_rect)
 
-    def get_enemy_position(self):
-        return self.enemy_collision_rect.center
+    def get_position(self):
+        return self.enemy_collision_rect
 
     def draw_collision_box(self, screen):
         pygame.draw.rect(screen, (255, 0, 0), self.enemy_collision_rect, 2)
@@ -152,3 +154,7 @@ class Enemy:
         elif self.moving_right:
             self.enemy_surface = self.animation_direction["right"][int(
                 self.image_index)]
+
+    def send_to_guard_post(self):
+        self.enemy_rect.centerx = self.orignal_enemy_position[0]
+        self.enemy_collision_rect.centerx = self.orignal_enemy_collision_position[0]
