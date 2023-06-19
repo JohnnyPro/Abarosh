@@ -2,6 +2,7 @@ import pygame
 import sys
 from ui_elements import Button
 from state import State
+from pygame import mixer
 
 
 class MainMenu:
@@ -17,6 +18,13 @@ class MainMenu:
 
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)
         cursorFont = pygame.font.SysFont("cambria", 35)
+
+
+        mixer.init()
+        mixer.music.load('assets/audio/titleScreenMusic.wav')
+        mixer.music.set_volume(0.2)
+        mixer.music.play()
+
 
         abaroshText = fontObj.render("Abarosh", True, "white")
         abaroshTextRect = abaroshText.get_rect(
@@ -45,7 +53,10 @@ class MainMenu:
         cursorRect = cursor.get_rect(
             center=(play.rect.left+offsetX, play.rect.centery-offsetY))
         hoveredIdx = 0
+        
+        
         while State.currentPage == "MAINMENU":
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
