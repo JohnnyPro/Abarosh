@@ -49,7 +49,7 @@ class Player:
              # Set the is_moving flag to False when colliding with a rock
         else:
             self.is_moving = True 
-        self.move()
+        self.move(rock_position)
 
     def configure_keys(self):
         self.keys = pygame.key.get_pressed()
@@ -77,34 +77,52 @@ class Player:
 
         return key[pygame.K_LSHIFT]
 
-    def move(self):
+    def move(self, rock_position):
         if not self.is_moving:
+            if self.__moving_up:
+                self.player_rect.centery = int(self.player_rect.centery + 5)
+                self.player_collision_rect.centery = int(self.player_collision_rect.centery + 5)
+
+            if self.__moving_down:
+                self.player_rect.centery = int(self.player_rect.centery - 5)
+                self.player_collision_rect.centery = int(self.player_collision_rect.centery - 5)
+
+            if self.__moving_left:
+                self.player_rect.centerx = int(self.player_rect.centerx + 5)
+                self.player_collision_rect.centerx = int(self.player_collision_rect.centerx + 5)
+
+            if self.__moving_right:
+                self.player_rect.centerx = int(self.player_rect.centerx - 5)
+                self.player_collision_rect.centerx = int(self.player_collision_rect.centerx - 5)
             return
+        
         self.__player_speed = 2.8 if not self.__moving_fast else self.__player_running_speed
 
+        # Store the player's previous position
+        prev_player_rect = self.player_rect.copy()
+        prev_collision_rect = self.player_collision_rect.copy()
+
         if self.__moving_up and not self.__is_colliding:
-            self.player_rect.centery = int(
-                self.player_rect.centery - self.__player_speed)
-            self.player_collision_rect.centery = int(
-                self.player_collision_rect.centery - self.__player_speed)
+            self.player_rect.centery = int(self.player_rect.centery - self.__player_speed)
+            self.player_collision_rect.centery = int(self.player_collision_rect.centery - self.__player_speed)
 
         if self.__moving_down and not self.__is_colliding:
-            self.player_rect.centery = int(
-                self.player_rect.centery + self.__player_speed)
-            self.player_collision_rect.centery = int(
-                self.player_collision_rect.centery + self.__player_speed)
+            self.player_rect.centery = int(self.player_rect.centery + self.__player_speed)
+            self.player_collision_rect.centery = int(self.player_collision_rect.centery + self.__player_speed)
 
         if self.__moving_left and not self.__is_colliding:
-            self.player_rect.centerx = int(
-                self.player_rect.centerx - self.__player_speed)
-            self.player_collision_rect.centerx = int(
-                self.player_collision_rect.centerx - self.__player_speed)
+            self.player_rect.centerx = int(self.player_rect.centerx - self.__player_speed)
+            self.player_collision_rect.centerx = int(self.player_collision_rect.centerx - self.__player_speed)
 
         if self.__moving_right and not self.__is_colliding:
-            self.player_rect.centerx = int(
-                self.player_rect.centerx + self.__player_speed)
-            self.player_collision_rect.centerx = int(
-                self.player_collision_rect.centerx + self.__player_speed)
+            self.player_rect.centerx = int(self.player_rect.centerx + self.__player_speed)
+            self.player_collision_rect.centerx = int(self.player_collision_rect.centerx + self.__player_speed)
+
+        if self.colliding_with_rock(rock_position):
+            # Reset the player's position to the previous position
+            self.deplete_stamina()
+            self.player_rect = prev_player_rect
+            self.player_collision_rect = prev_collision_rect
 
         if self.__moving_fast and self.stamina.max_stamina_point > 0:
             self.stamina.use_stamina()
@@ -112,6 +130,7 @@ class Player:
         if not self.__moving_fast:
             if self.stamina.max_stamina_point >= self.stamina.regeneration_time_out_factor:
                 self.stamina.refill_stamina()
+
             # elif self.stamina.regeneration_time_out_factor <= self.stamina.max_stamina_point < 0:
             #     self.stamina.use_stamina() # || DOESN'T WORK YET TRY AND MAKE IT WORK ||
 

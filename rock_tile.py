@@ -8,7 +8,7 @@ class Rock:
 
         self.rock_surface = scaled_image
         self.rock_rect = self.rock_surface.get_rect(center=(pos_x, pos_y))
-        self.rock_collision_rect = setup_collision_box(self.rock_surface, self.rock_rect, 72, 72)
+        self.rock_collision_rect = setup_collision_box(self.rock_surface, self.rock_rect, 72, 50)
 
     
     def draw(self, screen):
