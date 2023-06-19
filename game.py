@@ -4,14 +4,16 @@ from player import Player
 from enemy import Enemy
 from rescued_people import RescuedPeeps
 from rock_tile import Rock
+from state import State
 
 
-class Game:
+class Game(State):
     def __init__(self) -> None:
         pygame.init()
         self.screen = pygame.display.set_mode((800, 600))
         self.background_image = pygame.image.load('assets/trail1.png')
-        self.background_image = pygame.transform.scale(self.background_image, (800, 600))
+        self.background_image = pygame.transform.scale(
+            self.background_image, (800, 600))
         self.clock = pygame.time.Clock()
         self.player = Player(400, 300)
         self.enemy = Enemy(150, 300, 150)
@@ -26,10 +28,14 @@ class Game:
                 exit()
 
     def setup_prisoners(self):
-        self.rescuedpeeps.append(RescuedPeeps(50, 150, self, 'assets/sprites/peeps_sprite/Peeps-2.png.png'))
-        self.rescuedpeeps.append(RescuedPeeps(50, 240, self, 'assets/sprites/peeps_sprite/Peeps-4.png.png'))
-        self.rescuedpeeps.append(RescuedPeeps(50, 350, self, 'assets/sprites/peeps_sprite/Peeps-3.png.png'))
-        self.rescuedpeeps.append(RescuedPeeps(50, 440, self, 'assets/sprites/peeps_sprite/Peeps-5.png.png'))
+        self.rescuedpeeps.append(RescuedPeeps(
+            50, 150, self, 'assets/sprites/peeps_sprite/Peeps-2.png.png'))
+        self.rescuedpeeps.append(RescuedPeeps(
+            50, 240, self, 'assets/sprites/peeps_sprite/Peeps-4.png.png'))
+        self.rescuedpeeps.append(RescuedPeeps(
+            50, 350, self, 'assets/sprites/peeps_sprite/Peeps-3.png.png'))
+        self.rescuedpeeps.append(RescuedPeeps(
+            50, 440, self, 'assets/sprites/peeps_sprite/Peeps-5.png.png'))
 
     def increase_enemy_difficulty(self):
         self.enemy.increase_difficulty()
@@ -39,8 +45,8 @@ class Game:
 
         if self.player.player_collision_rect.colliderect(self.enemy.enemy_collision_rect):
             # implement your game over logic here
-            print("Game over bitch hehehe")
-        
+            State.currentPage = "GAMEOVER"
+
         if self.enemy.enemy_collision_rect.colliderect(self.rock.rock_collision_rect):
             print("Enemy down I repeat enemy down")
 
@@ -75,7 +81,6 @@ class Game:
             peeps.draw(self.screen)
             peeps.draw_collision(self.screen)
 
-
         pygame.display.update()
 
     def draw_sprites(self):
@@ -94,10 +99,8 @@ class Game:
             self.enemy.draw_collision_box(self.screen)
 
     def run(self):
-        while True:
+        while State.currentPage == "PLAY":
             self.handle_events()
             self.update()
             self.draw()
             self.clock.tick(60)
-
-
