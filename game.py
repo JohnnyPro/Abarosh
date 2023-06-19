@@ -52,7 +52,7 @@ class Game(State):
 
         if self.enemy.enemy_collision_rect.colliderect(self.rock.rock_collision_rect):
             self.enemy.send_to_guard_post()
-        
+
         if self.player.player_collision_rect.colliderect(self.rock.rock_collision_rect):
             self.player.deplete_stamina()
         self.player.update(self.rock.rock_collision_rect)
@@ -77,14 +77,17 @@ class Game(State):
         pygame.display.update()
 
     def draw_sprites(self):
-        if (self.player.get_position().centery > self.enemy.get_position().centery):
-            self.draw_order(self.enemy)
-            self.draw_order(self.player)
+        drawables = [self.rock, self.enemy, self.player]
+        drawables.sort(key=lambda x: x.get_position().centery, reverse=False)
+        for drawable in drawables:
+            drawable.draw(self.screen)
+        # if (self.player.get_position().centery > self.enemy.get_position().centery):
+        #     self.draw_order(self.enemy)
+        #     self.draw_order(self.player)
 
-
-        else:
-            self.draw_order(self.player)
-            self.draw_order(self.enemy)
+        # else:
+        #     self.draw_order(self.player)
+        #     self.draw_order(self.enemy)
 
     def draw_order(self, surface):
         if surface.get_position().centery >= self.rock.get_position().centery:
@@ -96,7 +99,6 @@ class Game(State):
             surface.draw(self.screen)
             self.rock.draw(self.screen)
             self.rock.draw_collision_box(self.screen)
-
 
     def run(self):
         while State.currentPage == "PLAY":
