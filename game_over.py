@@ -18,7 +18,7 @@ class GameOver:
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)
         cursorFont = pygame.font.SysFont("cambria", 35)
 
-        gameOverText = fontObj.render("GAME OVER", True, "white")
+        gameOverText = fontObj.render("GAME OVER", True, "red")
         gameOverTextRect = gameOverText.get_rect(
             center=(screen.get_width()/2, 200))
 

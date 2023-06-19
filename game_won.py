@@ -18,7 +18,7 @@ class GameWon:
         fontObj = pygame.font.Font('./assets/fonts/Pixeltype.ttf', 100)
         cursorFont = pygame.font.SysFont("cambria", 35)
 
-        gameWonText = fontObj.render("YOU WON", True, "white")
+        gameWonText = fontObj.render("YOU WON", True, "green")
         gameWonTextRect = gameWonText.get_rect(
             center=(screen.get_width()/2, 200))
 
